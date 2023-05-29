@@ -1,0 +1,19 @@
+.my-carousel {
+
+}
+
+.my-carousel-inner {
+    position: relative;
+}
+
+.my-carousel-item {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 120%;
+    transition: .2s cubic-bezier(.17,.67,.83,.67);
+}
+
+.my-carousel-item.active {
+    right: 0;
+}
