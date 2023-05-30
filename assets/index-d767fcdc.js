@@ -8802,7 +8802,7 @@ const ApplePayButton = () => {
     }
   }, []);
   const handlePayment = () => {
-    const session = new window.ApplePaySession(1, {
+    const session = new window.ApplePaySession(6, {
       countryCode: "US",
       currencyCode: "USD",
       merchantCapabilities: ["supports3DS", "supportsCredit", "supportsDebit"],
@@ -8833,7 +8833,7 @@ const ApplePayButton = () => {
     };
     session.begin();
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: applePayAvailable ? /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "plain", className: "apple-pay-button", onClick: handlePayment, children: "Apple Pay" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "Apple Pay is not available on this device or browser." }) });
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: applePayAvailable ? /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "plain", className: "apple-pay-button", onClick: handlePayment }) : /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "Apple Pay is not available on this device or browser." }) });
 };
 function Sidenav({ onClose, pages: pages2, onPageSelected }) {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(
