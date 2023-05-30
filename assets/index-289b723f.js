@@ -9253,7 +9253,7 @@ const ApplePayButton = () => {
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(AppendHeader, { children: /* @__PURE__ */ jsxRuntimeExports.jsx("script", { onLoad: () => setLoaded(true), src: "https://applepay.cdn-apple.com/jsapi/v1/apple-pay-sdk.js" }) }),
-    applePayAvailable && loaded ? /* @__PURE__ */ jsxRuntimeExports.jsx("apple-pay-button", { buttonstyle: "black", type: "plain", locale: "en", className: "apple-pay-button", onClick: handlePayment, children: "Apple Pay" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "Apple Pay is not available on this device or browser." })
+    applePayAvailable && loaded ? /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "plain", className: "apple-pay-button", onClick: handlePayment, children: "Apple Pay" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "Apple Pay is not available on this device or browser." })
   ] });
 };
 function Sidenav({ onClose, pages: pages2, onPageSelected }) {
