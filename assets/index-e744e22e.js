@@ -9220,37 +9220,40 @@ const ApplePayButton = () => {
     }
   }, []);
   const handlePayment = () => {
-    const paymentRequest = {
+    const session = new window.ApplePaySession(1, {
       countryCode: "US",
-      // Replace with your desired country code
       currencyCode: "USD",
-      // Replace with your desired currency code
+      merchantCapabilities: ["supports3DS", "supportsCredit", "supportsDebit"],
+      supportedNetworks: ["amex", "discover", "masterCard", "visa"],
       total: {
         label: "Total Amount",
         amount: "10.00"
-        // Replace with your actual payment amount
-      },
-      merchantCapabilities: ["supports3DS"],
-      // Add the required capabilities
-      supportedNetworks: ["amex", "discover", "masterCard", "visa"]
-    };
-    const session = new window.ApplePaySession(3, paymentRequest);
-    console.log(session);
+      }
+    });
+    console.log({ session });
     session.onvalidatemerchant = (event) => {
       const validationURL = event.validationURL;
-      console.log({ event, validationURL });
-      event.completeMerchantValidation("...");
+      fetch("http://localhost:3000/api/payments/merchant-validation", {
+        method: "POST",
+        body: JSON.stringify({ validationURL })
+      }).then((response) => response.json()).then((data) => {
+        console.log({ data });
+        session.completeMerchantValidation(data.merchantSession);
+      }).catch((error) => {
+        console.error("Merchant validation error:", error);
+        session.abort();
+      });
     };
     session.onpaymentauthorized = (event) => {
       const payment = event.payment;
-      console.log("Payment token:", payment.token);
+      console.log({ payment });
       session.completePayment(window.ApplePaySession.STATUS_SUCCESS);
     };
     session.begin();
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(AppendHeader, { children: /* @__PURE__ */ jsxRuntimeExports.jsx("script", { onLoad: () => setLoaded(true), src: "https://applepay.cdn-apple.com/jsapi/v1/apple-pay-sdk.js" }) }),
-    applePayAvailable && loaded ? /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "apple-pay-button", onClick: handlePayment, children: "Apple Pay" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "Apple Pay is not available on this device or browser." })
+    applePayAvailable && loaded ? /* @__PURE__ */ jsxRuntimeExports.jsx("apple-pay-button", { buttonstyle: "black", type: "plain", locale: "en", className: "apple-pay-button", onClick: handlePayment, children: "Apple Pay" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "Apple Pay is not available on this device or browser." })
   ] });
 };
 function Sidenav({ onClose, pages: pages2, onPageSelected }) {
