@@ -9233,7 +9233,7 @@ const ApplePayButton = () => {
     console.log({ session });
     session.onvalidatemerchant = (event) => {
       const validationURL = event.validationURL;
-      fetch("http://localhost:3000/api/payments/merchant-validation", {
+      fetch("https://gwntdsm5md.execute-api.us-east-1.amazonaws.com/default/payments-validation", {
         method: "POST",
         body: JSON.stringify({ validationURL })
       }).then((response) => response.json()).then((data) => {
