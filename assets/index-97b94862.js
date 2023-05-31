@@ -8796,6 +8796,11 @@ function GoogleApplePay() {
 }
 const ApplePayButton = () => {
   const [applePayAvailable, setApplePayAvailable] = reactExports.useState(false);
+  const [paymentData, setPaymentData] = reactExports.useState();
+  const [paymentRequestData, setPaymentRequestData] = reactExports.useState({
+    label: "Total Amount",
+    amount: "10.00"
+  });
   reactExports.useEffect(() => {
     if (window.ApplePaySession && window.ApplePaySession.canMakePayments()) {
       setApplePayAvailable(true);
@@ -8807,10 +8812,7 @@ const ApplePayButton = () => {
       currencyCode: "USD",
       merchantCapabilities: ["supports3DS", "supportsCredit", "supportsDebit"],
       supportedNetworks: ["amex", "discover", "masterCard", "visa"],
-      total: {
-        label: "Total Amount",
-        amount: "10.00"
-      }
+      total: paymentRequestData
     });
     console.log({ session });
     session.onvalidatemerchant = (event) => {
@@ -8830,10 +8832,32 @@ const ApplePayButton = () => {
       const payment = event.payment;
       console.log({ payment });
       session.completePayment(window.ApplePaySession.STATUS_SUCCESS);
+      setPaymentData(payment);
     };
     session.begin();
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: applePayAvailable ? /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "plain", className: "apple-pay-button", onClick: handlePayment }) : /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "Apple Pay is not available on this device or browser." }) });
+  const PaymentBody = () => {
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h6", { className: "font-weight-bold mt-2 text-sm", children: "Make a Apple Payment" }),
+      Object.keys(paymentRequestData).map((pField) => {
+        return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          InputGroup,
+          {
+            onChange: (v2) => setPaymentRequestData({ ...paymentRequestData, [pField]: v2 }),
+            label: pField,
+            value: paymentRequestData[pField]
+          }
+        ) }, pField);
+      }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "plain", className: "apple-pay-button", onClick: handlePayment }),
+      paymentData && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("hr", { className: "horizontal dark mt-3" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h6", { className: "font-weight-bold mt-2 text-sm", children: "Payment Data" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(ListGroup, { items: paymentData })
+      ] })
+    ] });
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: applePayAvailable ? /* @__PURE__ */ jsxRuntimeExports.jsx(PaymentBody, {}) : /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "Apple Pay is not available on this device or browser." }) });
 };
 function Sidenav({ onClose, pages: pages2, onPageSelected }) {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(
